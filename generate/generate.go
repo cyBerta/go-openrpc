@@ -160,14 +160,24 @@ func maybeMethodResult(method types.Method) string {
 
 func maybeMethodComment(method types.Method) string {
 	if comment := util.FirstOf(method.Description, method.Summary); comment != "" {
-		return fmt.Sprintf("// %s", comment)
+		result := ""
+		multilineComment := strings.Split(comment, "\n")
+		for _, singleLineComment := range multilineComment {
+			result += fmt.Sprintf("\n// %s", singleLineComment)
+		}
+		return result
 	}
 	return ""
 }
 
 func maybeFieldComment(desc string) string {
 	if desc != "" {
-		return fmt.Sprintf("// %s", desc)
+		result := ""
+		multilineComment := strings.Split(desc, "\n")
+		for _, comment := range multilineComment {
+			result += fmt.Sprintf("\n// %s", comment)
+		}
+		return result
 	}
 	return ""
 }
