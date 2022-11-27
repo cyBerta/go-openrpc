@@ -261,10 +261,11 @@ func WriteFile(box *packr.Box, name, pkg string, openrpc *types.OpenRPCSpec1) er
 	if err != nil {
 		return err
 	}
-	file, err := os.OpenFile(path.Join(pkg, fmt.Sprintf("%s.%s", name, goExt)), os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(path.Join(pkg, fmt.Sprintf("%s.%s", name, goExt)), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
+
 	defer file.Close()
 
 	return cfg.Fprint(file, fset, root)
