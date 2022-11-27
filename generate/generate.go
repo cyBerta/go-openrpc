@@ -160,14 +160,24 @@ func maybeMethodResult(method types.Method) string {
 
 func maybeMethodComment(method types.Method) string {
 	if comment := util.FirstOf(method.Description, method.Summary); comment != "" {
-		return fmt.Sprintf("// %s", comment)
+		result := ""
+		multilineComment := strings.Split(comment, "\n")
+		for _, singleLineComment := range multilineComment {
+			result += fmt.Sprintf("\n// %s", singleLineComment)
+		}
+		return result
 	}
 	return ""
 }
 
 func maybeFieldComment(desc string) string {
 	if desc != "" {
-		return fmt.Sprintf("// %s", desc)
+		result := ""
+		multilineComment := strings.Split(desc, "\n")
+		for _, comment := range multilineComment {
+			result += fmt.Sprintf("\n// %s", comment)
+		}
+		return result
 	}
 	return ""
 }
@@ -251,10 +261,11 @@ func WriteFile(box *packr.Box, name, pkg string, openrpc *types.OpenRPCSpec1) er
 	if err != nil {
 		return err
 	}
-	file, err := os.OpenFile(path.Join(pkg, fmt.Sprintf("%s.%s", name, goExt)), os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(path.Join(pkg, fmt.Sprintf("%s.%s", name, goExt)), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
+
 	defer file.Close()
 
 	return cfg.Fprint(file, fset, root)

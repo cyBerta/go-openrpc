@@ -64,7 +64,7 @@ To configure your bash shell to load completions for each session add to your ba
 var errJSONRPC = errors.New("json rpc did return error")
 func makeJSONRPCRequest(name string, params []byte) ([]byte, error) {
     reqBody := rpct.RPCRequest{
-        JSONRPC: "2.0",
+        JSONRPC:  "{{ .Info.Version }}",
         Method: name,
         Params: params,
         ID: os.Getpid(), // TODO

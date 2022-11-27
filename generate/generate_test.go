@@ -79,5 +79,6 @@ func TestGenerate(t *testing.T) {
 
 func TestMaybeComment(t *testing.T) {
 	require.Equal(t, "", maybeFieldComment(""))
-	require.Equal(t, "// hello, world", maybeFieldComment("hello, world"))
+	require.Equal(t, "\n// hello, world", maybeFieldComment("hello, world"))
+	require.Equal(t, "\n// hello\n// world", maybeFieldComment("hello\nworld"))
 }
